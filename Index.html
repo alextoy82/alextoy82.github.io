@@ -757,10 +757,10 @@
     </footer>
   </div>
 
+
 <script>
-function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));var t=document.getElementById('page-'+id);if(t){t.classList.add('active');window.scrollTo(0,0);}}
-function toggleMobile(){document.getElementById('mobile-menu').classList.toggle('open');document.getElementById('hamburger').classList.toggle('open');}
-window.addEventListener('scroll',()=>{document.getElementById('main-nav').classList.toggle('scrolled',window.scrollY>20);});
+function showPage(id){var p=document.querySelectorAll('.page');for(var i=0;i<p.length;i++)p[i].classList.remove('active');var t=document.getElementById('page-'+id);if(t)t.classList.add('active');}
+function toggleMobile(){document.getElementById('mobile-menu').classList.toggle('open');}
 </script>
 </body>
 </html>
