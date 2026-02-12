@@ -757,7 +757,7 @@
     </footer>
   </div>
 
-  <script>
+<script>
 function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));var t=document.getElementById('page-'+id);if(t){t.classList.add('active');window.scrollTo(0,0);}}
 function toggleMobile(){document.getElementById('mobile-menu').classList.toggle('open');document.getElementById('hamburger').classList.toggle('open');}
 window.addEventListener('scroll',()=>{document.getElementById('main-nav').classList.toggle('scrolled',window.scrollY>20);});
