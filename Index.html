@@ -462,6 +462,10 @@
       footer { padding: 32px 24px; flex-direction: column; gap: 12px; }
     }
   </style>
+  <script>
+function showPage(id){var p=document.querySelectorAll('.page');for(var i=0;i<p.length;i++)p[i].classList.remove('active');var t=document.getElementById('page-'+id);if(t)t.classList.add('active');}
+function toggleMobile(){document.getElementById('mobile-menu').classList.toggle('open');}
+</script>
 </head>
 <body>
 
