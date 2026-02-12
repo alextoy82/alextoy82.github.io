@@ -441,11 +441,6 @@
 
     /* ── SCROLL REVEAL ── */
     .reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .reveal.visible {
       opacity: 1;
       transform: translateY(0);
     }
@@ -516,12 +511,12 @@
       <p class="hero-bio">Creative and strategic design leader with a proven track record in handbag design, graphics, and concept development across global luxury and contemporary fashion brands.</p>
     </section>
 
-    <div class="section-header reveal">
+    <div class="section-header">
       <span class="section-label">Selected Work</span>
     </div>
 
     <div class="brand-grid">
-      <div class="brand-card reveal" onclick="showPage('mk')">
+      <div class="brand-card" onclick="showPage('mk')">
         <img src="https://alextoy82.github.io/home-mk.webp" alt="Michael Kors" loading="lazy" />
         <div class="brand-card-label"><span>Michael Kors</span></div>
         <div class="brand-card-overlay">
@@ -529,7 +524,7 @@
           <div class="brand-card-sub">Handbag Design</div>
         </div>
       </div>
-      <div class="brand-card reveal" onclick="showPage('gryson')">
+      <div class="brand-card" onclick="showPage('gryson')">
         <img src="https://alextoy82.github.io/home-gryson.webp" alt="Gryson / Olivia Harris" loading="lazy" />
         <div class="brand-card-label"><span>Gryson / Olivia Harris</span></div>
         <div class="brand-card-overlay">
@@ -537,7 +532,7 @@
           <div class="brand-card-sub">Olivia Harris</div>
         </div>
       </div>
-      <div class="brand-card reveal" onclick="showPage('mcm-brand')">
+      <div class="brand-card" onclick="showPage('mcm-brand')">
         <img src="https://alextoy82.github.io/home-mcm.webp" alt="MCM" loading="lazy" />
         <div class="brand-card-label"><span>MCM</span></div>
         <div class="brand-card-overlay">
@@ -545,7 +540,7 @@
           <div class="brand-card-sub">Luxury Design</div>
         </div>
       </div>
-      <div class="brand-card reveal" onclick="showPage('botkier')">
+      <div class="brand-card" onclick="showPage('botkier')">
         <img src="https://alextoy82.github.io/home-botkier.webp" alt="Botkier" loading="lazy" />
         <div class="brand-card-label"><span>Botkier</span></div>
         <div class="brand-card-overlay">
@@ -553,7 +548,7 @@
           <div class="brand-card-sub">Contemporary Design</div>
         </div>
       </div>
-      <div class="brand-card reveal" onclick="showPage('atoy')">
+      <div class="brand-card" onclick="showPage('atoy')">
         <img src="https://alextoy82.github.io/home-atoy.webp" alt="ATOY" loading="lazy" />
         <div class="brand-card-label"><span>ATOY</span></div>
         <div class="brand-card-overlay">
