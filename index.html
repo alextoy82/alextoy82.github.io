@@ -170,9 +170,13 @@
       min-height: 100vh;
       padding: 120px 48px 80px;
       display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
+      flex-direction: row;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 48px;
     }
+    .hero-left { flex: 0 0 auto; }
+    .hero-right { flex: 0 0 45%; padding-bottom: 8px; }
     .hero-eyebrow {
       font-size: 9px;
       letter-spacing: 0.3em;
@@ -547,10 +551,12 @@ document.addEventListener('DOMContentLoaded',function(){
     <section class="hero">
       
       
-      <h2 class="hero-heading">Creative and strategic design leader.</h2>
+      <div class="hero-left"><h1 class="hero-title">Alex<br><em>Toy</em></h1></div>
+      <div class="hero-right"><h2 class="hero-heading">Creative and strategic design leader.</h2>
       <p class="hero-bio">Expertise in transforming brand identity through innovative logo development, material selection, and trend forecasting.</p>
       <p class="hero-bio">Adept at leading high-performing teams and optimizing design processes within global luxury and contemporary fashion brands.</p>
       <p class="hero-bio">Known for driving revenue growth through commercially successful designs, cross-functional collaboration, and a forward-thinking approach to branding and novelty innovation.</p>
+      </div>
     </section>
 
     <div class="section-header">
