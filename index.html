@@ -11,7 +11,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --cream: #f5f2ed;
+      --cream: #ffffff;
       --black: #0e0e0e;
       --warm-gray: #9a9189;
       --accent: #b8a898;
@@ -39,7 +39,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 28px 48px;
-      background: rgba(245,242,237,0.92);
+      background: rgba(245,245,245,0.92);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid transparent;
       transition: border-color 0.4s;
@@ -265,9 +265,6 @@
       cursor: pointer;
       background: #e8e4de;
     }
-    .brand-card:first-child {
-      grid-column: 1 / -1;
-    }
     .brand-card img {
       width: 100%;
       aspect-ratio: 4/3;
@@ -275,9 +272,6 @@
       display: block;
       transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.5s;
       filter: brightness(0.96);
-    }
-    .brand-card:first-child img {
-      aspect-ratio: 16/7;
     }
     .brand-card:hover img {
       transform: scale(1.04);
@@ -350,14 +344,13 @@
 
     .gallery-masonry {
       padding: 0 48px 80px;
-      columns: 2;
-      column-gap: 4px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 4px;
     }
     .gallery-masonry img {
       width: 100%;
       display: block;
-      margin-bottom: 4px;
-      break-inside: avoid;
     }
 
     /* ── ABOUT PAGE ── */
@@ -399,12 +392,17 @@
     .about-contact a:hover { color: var(--warm-gray); }
     .about-images {
       display: grid;
-      grid-template-rows: auto;
+      grid-template-columns: repeat(2, 1fr);
       gap: 4px;
     }
     .about-images img {
       width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
       display: block;
+    }
+    .about-images img:last-child {
+      grid-column: 1 / -1;
     }
 
     /* ── FOOTER ── */
@@ -452,12 +450,10 @@
       .hamburger { display: flex; }
       .hero { padding: 100px 24px 60px; }
       .brand-grid { grid-template-columns: 1fr; }
-      .brand-card:first-child { grid-column: 1; }
-      .brand-card:first-child img { aspect-ratio: 4/3; }
       .section-header { padding: 60px 24px 32px; }
       .subsection-header { padding: 40px 24px 24px; }
       .gallery-full { padding: 0 24px 60px; }
-      .gallery-masonry { padding: 0 24px 60px; columns: 1; }
+      .gallery-masonry { padding: 0 24px 60px; grid-template-columns: 1fr; }
       .about-layout { grid-template-columns: 1fr; gap: 40px; padding: 0 24px 60px; }
       footer { padding: 32px 24px; flex-direction: column; gap: 12px; }
     }
@@ -735,6 +731,7 @@ document.addEventListener('DOMContentLoaded',function(){
       <img src="https://alextoy82.github.io/sig-12.webp" alt="" loading="lazy" class="reveal" />
       <img src="https://alextoy82.github.io/sig-13.webp" alt="" loading="lazy" class="reveal" />
       <img src="https://alextoy82.github.io/sig-14.webp" alt="" loading="lazy" class="reveal" />
+      <img src="https://alextoy82.github.io/sig-15.webp" alt="" loading="lazy" class="reveal" />
     </div>
     <footer>
       <a href="#" data-page="home">← Back to Work</a>
@@ -765,7 +762,7 @@ document.addEventListener('DOMContentLoaded',function(){
     <div class="section-header">
       <span class="section-label">Technical Work</span>
     </div>
-    <div class="gallery-full">
+    <div class="gallery-masonry">
       <img src="https://alextoy82.github.io/tech-1.webp" alt="" loading="lazy" class="reveal" />
       <img src="https://alextoy82.github.io/tech-2.webp" alt="" loading="lazy" class="reveal" />
       <img src="https://alextoy82.github.io/tech-3.webp" alt="" loading="lazy" class="reveal" />
@@ -796,8 +793,8 @@ document.addEventListener('DOMContentLoaded',function(){
       </div>
       <div class="about-images reveal">
         <img src="https://alextoy82.github.io/about-headshot.webp" alt="Alex Toy" />
-        <img src="https://alextoy82.github.io/about-sketches.webp" alt="Sketches" style="margin-top:4px;" />
-        <img src="https://alextoy82.github.io/about-photo.webp" alt="Work" style="margin-top:4px;" />
+        <img src="https://alextoy82.github.io/about-sketches.webp" alt="Sketches" />
+        <img src="https://alextoy82.github.io/about-photo.webp" alt="Work" />
       </div>
     </div>
     <footer>
