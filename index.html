@@ -28,6 +28,7 @@
       font-size: 11px;
       letter-spacing: 0.12em;
       overflow-x: hidden;
+      -webkit-text-size-adjust: 100%;
     }
 
     /* ── NAV ── */
@@ -443,6 +444,7 @@
 
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
+      body { font-size: 16px; }
       nav { padding: 20px 24px; }
       .nav-links { display: none; }
       .hamburger { display: flex; }
@@ -483,6 +485,9 @@ document.addEventListener('DOMContentLoaded',function(){
       document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
       var t=document.getElementById('page-'+id);
       if(t){t.classList.add('active');window.scrollTo(0,0);}
+      // close mobile menu
+      document.getElementById('mobile-menu').classList.remove('open');
+      document.getElementById('hamburger').classList.remove('open');
     });
   });
   window.addEventListener('scroll',function(){
