@@ -442,6 +442,28 @@
       transform: translateY(0);
     }
 
+    /* ── BRAND INTRO ── */
+    .brand-intro {
+      padding: 0 48px 52px;
+      max-width: 700px;
+    }
+    .brand-intro-role {
+      font-size: 9px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      margin-bottom: 18px;
+    }
+    .brand-intro p {
+      font-size: 11px;
+      line-height: 2.1;
+      color: var(--warm-gray);
+      margin-bottom: 14px;
+    }
+    @media (max-width: 768px) {
+      .brand-intro { padding: 0 24px 40px; }
+    }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
       body { font-size: 16px; }
@@ -517,7 +539,7 @@ document.addEventListener('DOMContentLoaded',function(){
           <a href="#" data-page="atoy">ATOY</a>
         </div>
       </li>
-      <li><a href="#" data-page="signature">Signature</a></li>
+      <li><a href="#" data-page="signature">Surface Design</a></li>
       <li><a href="#" data-page="technical">Technical</a></li>
       <li><a href="#" data-page="about">About</a></li>
     </ul>
@@ -534,7 +556,7 @@ document.addEventListener('DOMContentLoaded',function(){
     <a href="#" data-page="gryson">Gryson / Olivia Harris</a>
     <a href="#" data-page="botkier">Botkier</a>
     <a href="#" data-page="atoy">ATOY</a>
-    <a href="#" data-page="signature">Signature</a>
+    <a href="#" data-page="signature">Surface Design</a>
     
     <a href="#" data-page="technical">Technical</a>
     <a href="#" data-page="about">About</a>
@@ -546,10 +568,10 @@ document.addEventListener('DOMContentLoaded',function(){
       
       
       <div class="hero-left"><h1 class="hero-title">Alex<br><em>Toy</em></h1></div>
-      <div class="hero-right"><h2 class="hero-heading">Creative and strategic design leader.</h2>
-      <p class="hero-bio">Expertise in transforming brand identity through innovative logo development, material selection, and trend forecasting.</p>
-      <p class="hero-bio">Adept at leading high-performing teams and optimizing design processes within global luxury and contemporary fashion brands.</p>
-      <p class="hero-bio">Known for driving revenue growth through commercially successful designs, cross-functional collaboration, and a forward-thinking approach to branding and novelty innovation.</p>
+      <div class="hero-right"><h2 class="hero-heading">Senior accessories design leader.</h2>
+      <p class="hero-bio">Ten years at Michael Kors as Senior Director of Design Studio, leading logo innovation, novelty development, and the surface treatments that define each season's commercial identity across Mainline, Outlet, and Off-price.</p>
+      <p class="hero-bio">Cross-functional leadership spanning Accessories, Footwear, and Ready-to-Wear, with hands-on material and factory development in Italy, China, and Korea.</p>
+      <p class="hero-bio">Earlier career across Joy Gryson studio, MCM, and Botkier New York. Founder of A.Toy, an independent accessories label built on an original creative point of view.</p>
       </div>
     </section>
 
@@ -611,6 +633,11 @@ document.addEventListener('DOMContentLoaded',function(){
     <div class="section-header">
       <span class="section-label">Michael Kors</span>
     </div>
+    <div class="brand-intro">
+      <div class="brand-intro-role">Senior Director, Design Studio &nbsp;&middot;&nbsp; 10 Years</div>
+      <p>Led the Michael Kors graphics team responsible for logo innovation, novelty design, and surface treatment development across each seasonal collection. Directed design for Mainline, Outlet, and Off-price channels, ensuring visual coherence and commercial impact across all product tiers.</p>
+      <p>Oversaw cross-functional alignment across Accessories, Footwear, and Men's and Women's Ready-to-Wear, reporting to the VP of Handbags and Footwear. Managed factory and material development with production partners in Italy, China, and Korea, from initial sourcing through prototype review.</p>
+    </div>
     <div class="gallery-masonry">
       <img src="https://alextoy82.github.io/mk-1.webp" alt="" loading="lazy" class="reveal" />
       <img src="https://alextoy82.github.io/mk-2.webp" alt="" loading="lazy" class="reveal" />
@@ -630,6 +657,10 @@ document.addEventListener('DOMContentLoaded',function(){
     <div class="section-header">
       <span class="section-label">MCM</span>
     </div>
+    <div class="brand-intro">
+      <div class="brand-intro-role">Design Consultant</div>
+      <p>Developed the MCM New York Collection in collaboration with Joy Gryson studio. Premium price point product designed and manufactured in Italy, with hands-on prototype development at Italian ateliers. The collection focused on elevated leather goods positioned at luxury price points for the North American market.</p>
+    </div>
     <div class="gallery-masonry">
       <img src="https://alextoy82.github.io/mcm-1.webp" alt="" loading="lazy" class="reveal" />
       <img src="https://alextoy82.github.io/mcm-2.webp" alt="" loading="lazy" class="reveal" />
@@ -646,6 +677,10 @@ document.addEventListener('DOMContentLoaded',function(){
   <div id="page-gryson" class="page">
     <div class="section-header">
       <span class="section-label">Gryson / Olivia Harris</span>
+    </div>
+    <div class="brand-intro">
+      <div class="brand-intro-role">Senior Designer &nbsp;&middot;&nbsp; Multi-brand Studio</div>
+      <p>Designed across the Joy Gryson studio's portfolio of in-house labels including Gryson, IIIBeca, and Olivia Harris, spanning contemporary to bridge price points. Also led external design consulting for MCM from within the studio, developing the NY Collection for the Italian luxury market.</p>
     </div>
 
     <!-- GRYSON subsection -->
@@ -679,6 +714,10 @@ document.addEventListener('DOMContentLoaded',function(){
     <div class="section-header">
       <span class="section-label">Botkier</span>
     </div>
+    <div class="brand-intro">
+      <div class="brand-intro-role">Designer &nbsp;&middot;&nbsp; Contemporary Accessories</div>
+      <p>Designed leather goods for Botkier New York, a contemporary accessories brand known for distinctive hardware and a downtown New York aesthetic. Work included original design development from concept through sketch and final specification.</p>
+    </div>
     <div class="gallery-masonry">
       <img src="https://alextoy82.github.io/botkier-1.webp" alt="" loading="lazy" class="reveal" />
       <img src="https://alextoy82.github.io/botkier-2.webp" alt="" loading="lazy" class="reveal" />
@@ -695,6 +734,10 @@ document.addEventListener('DOMContentLoaded',function(){
   <div id="page-atoy" class="page">
     <div class="section-header">
       <span class="section-label">ATOY</span>
+    </div>
+    <div class="brand-intro">
+      <div class="brand-intro-role">Founder &nbsp;&middot;&nbsp; Independent Label</div>
+      <p>A.Toy is an independent accessories label created to express a design point of view that felt absent from the market. Every element, from material selection to hardware development, reflects a singular creative vision built outside the constraints of a corporate design calendar, and informed by years of working at the highest level of the accessories industry.</p>
     </div>
     <div class="gallery-masonry">
       <img src="https://alextoy82.github.io/atoy-1.webp" alt="" loading="lazy" class="reveal" />
@@ -721,7 +764,12 @@ document.addEventListener('DOMContentLoaded',function(){
   <!-- ══════════════════════════════ SIGNATURE ══════════════════════════ -->
   <div id="page-signature" class="page">
     <div class="section-header">
-      <span class="section-label">Signature</span>
+      <span class="section-label">Surface Design</span>
+    </div>
+    <div class="brand-intro">
+      <div class="brand-intro-role">Michael Kors &nbsp;&middot;&nbsp; Logo Innovation &amp; Novelty Development</div>
+      <p>Developed signature surface treatments, logo innovations, and print executions for Michael Kors across multiple seasons. Work spans pattern origination, colorway development, and the translation of brand codes into commercially viable novelty product, from deboss and jacquard to degrade and distortion.</p>
+      <p>These franchises travel across categories and channels, informing everything from hero handbag styles to ready-to-wear, and represent one of the core commercial drivers of each seasonal collection.</p>
     </div>
     <div class="gallery-masonry">
       <img src="https://alextoy82.github.io/sig-1.webp" alt="" loading="lazy" class="reveal" />
@@ -769,10 +817,10 @@ document.addEventListener('DOMContentLoaded',function(){
     </div>
     <div class="about-layout">
       <div class="about-text reveal">
-        <h2>Creative and strategic design leader.</h2>
-        <p>Expertise in transforming brand identity through innovative logo development, material selection, and trend forecasting.</p>
-        <p>Adept at leading high-performing teams and optimizing design processes within global luxury and contemporary fashion brands.</p>
-        <p>Known for driving revenue growth through commercially successful designs, cross-functional collaboration, and a forward-thinking approach to branding and novelty innovation.</p>
+        <h2>Senior accessories design leader.</h2>
+        <p>Over 10 years at Michael Kors as Senior Director of Design Studio, leading the team responsible for logo innovation, novelty development, and surface design across Mainline, Outlet, and Off-price collections. Managed a core team while coordinating alignment across a cross-functional group spanning Accessories, Footwear, and Men's and Women's Ready-to-Wear, reporting directly to the VP of Handbags and Footwear.</p>
+        <p>Earlier career spanned Joy Gryson studio, where work included design consulting for MCM developing premium leather goods manufactured in Italy, as well as in-house brand development across Gryson, IIIBeca, and Olivia Harris. Additional design experience at Botkier New York.</p>
+        <p>Hands-on factory and material development across Italy, China, and Korea, from initial sourcing through prototype sign-off. Founder of A.Toy, an independent accessories label built on a distinct and original creative perspective.</p>
         <div class="about-contact">
 
           <a href="tel:9172086078">917-208-6078</a>
