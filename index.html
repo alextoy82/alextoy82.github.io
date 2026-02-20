@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
   <title>ALEX TOY — Design</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -404,6 +405,49 @@
       object-position: center top;
     }
 
+    /* ── ABOUT VALUES ── */
+    .about-values {
+      padding: 0 48px 80px;
+      border-top: 1px solid var(--border);
+    }
+    .about-values-label {
+      display: block;
+      font-size: 9px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      padding: 40px 0 40px;
+    }
+    .about-values-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 48px;
+    }
+    .about-value-number {
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      color: var(--warm-gray);
+      margin-bottom: 16px;
+    }
+    .about-value-title {
+      font-family: 'Bebas Neue', 'Montserrat', sans-serif;
+      font-size: 22px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      line-height: 1.2;
+      margin-bottom: 20px;
+      color: var(--black);
+    }
+    .about-value-body {
+      font-size: 11px;
+      line-height: 2;
+      color: var(--warm-gray);
+    }
+    @media (max-width: 768px) {
+      .about-values { padding: 0 24px 60px; }
+      .about-values-grid { grid-template-columns: 1fr; gap: 40px; }
+    }
+
     /* ── FOOTER ── */
     footer {
       border-top: 1px solid var(--border);
@@ -440,6 +484,60 @@
     .reveal {
       opacity: 1;
       transform: translateY(0);
+    }
+
+    /* ── PROCESS PAGE ── */
+    .process-step {
+      padding: 60px 48px 0;
+      max-width: 700px;
+    }
+    .process-step-number {
+      font-size: 9px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      margin-bottom: 10px;
+    }
+    .process-step-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 0.06em;
+      margin-bottom: 14px;
+    }
+    .process-step p {
+      font-size: 11px;
+      line-height: 2.1;
+      color: var(--warm-gray);
+    }
+    .process-gallery-single {
+      padding: 32px 48px 0;
+    }
+    .process-gallery-single img {
+      width: 100%;
+      max-width: 1000px;
+      display: block;
+    }
+    .process-gallery-grid {
+      padding: 32px 48px 0;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 4px;
+      max-width: 1000px;
+    }
+    .process-gallery-grid img {
+      width: 100%;
+      display: block;
+    }
+    .process-divider {
+      margin: 60px 48px 0;
+      border: none;
+      border-top: 1px solid var(--border);
+    }
+    @media (max-width: 768px) {
+      .process-step { padding: 48px 24px 0; }
+      .process-gallery-single { padding: 24px 24px 0; }
+      .process-gallery-grid { padding: 24px 24px 0; grid-template-columns: 1fr; }
+      .process-divider { margin: 48px 24px 0; }
     }
 
     /* ── BRAND INTRO ── */
@@ -539,8 +637,8 @@ document.addEventListener('DOMContentLoaded',function(){
           <a href="#" data-page="atoy">ATOY</a>
         </div>
       </li>
+      <li><a href="#" data-page="process">Process</a></li>
       <li><a href="#" data-page="signature">Surface Design</a></li>
-      <li><a href="#" data-page="technical">Technical</a></li>
       <li><a href="#" data-page="about">About</a></li>
     </ul>
     <button class="hamburger" id="hamburger" id="hamburger-btn" aria-label="Menu">
@@ -556,9 +654,8 @@ document.addEventListener('DOMContentLoaded',function(){
     <a href="#" data-page="gryson">Gryson / Olivia Harris</a>
     <a href="#" data-page="botkier">Botkier</a>
     <a href="#" data-page="atoy">ATOY</a>
+    <a href="#" data-page="process">Process</a>
     <a href="#" data-page="signature">Surface Design</a>
-    
-    <a href="#" data-page="technical">Technical</a>
     <a href="#" data-page="about">About</a>
   </div>
 
@@ -568,10 +665,10 @@ document.addEventListener('DOMContentLoaded',function(){
       
       
       <div class="hero-left"><h1 class="hero-title">Alex<br><em>Toy</em></h1></div>
-      <div class="hero-right"><h2 class="hero-heading">Senior accessories design leader.</h2>
-      <p class="hero-bio">Ten years at Michael Kors as Senior Director of Design Studio, leading logo innovation, novelty development, and the surface treatments that define each season's commercial identity across Mainline, Outlet, and Off-price.</p>
-      <p class="hero-bio">Cross-functional leadership spanning Accessories, Footwear, and Ready-to-Wear, with hands-on material and factory development in Italy, China, and Korea.</p>
-      <p class="hero-bio">Earlier career across Joy Gryson studio, MCM, and Botkier New York. Founder of A.Toy, an independent accessories label built on an original creative point of view.</p>
+      <div class="hero-right"><h2 class="hero-heading">Creative and strategic design leader.</h2>
+      <p class="hero-bio">Expertise in transforming brand identity through innovative logo development, material selection, and trend forecasting.</p>
+      <p class="hero-bio">Adept at leading high-performing teams and optimizing design processes within global luxury and contemporary fashion brands.</p>
+      <p class="hero-bio">Known for driving revenue growth through commercially successful designs, cross-functional collaboration, and a forward-thinking approach to branding and novelty innovation.</p>
       </div>
     </section>
 
@@ -634,9 +731,8 @@ document.addEventListener('DOMContentLoaded',function(){
       <span class="section-label">Michael Kors</span>
     </div>
     <div class="brand-intro">
-      <div class="brand-intro-role">Senior Director, Design Studio &nbsp;&middot;&nbsp; 10 Years</div>
-      <p>Led the Michael Kors graphics team responsible for logo innovation, novelty design, and surface treatment development across each seasonal collection. Directed design for Mainline, Outlet, and Off-price channels, ensuring visual coherence and commercial impact across all product tiers.</p>
-      <p>Oversaw cross-functional alignment across Accessories, Footwear, and Men's and Women's Ready-to-Wear, reporting to the VP of Handbags and Footwear. Managed factory and material development with production partners in Italy, China, and Korea, from initial sourcing through prototype review.</p>
+      <div class="brand-intro-role">Michael Kors &nbsp;&middot;&nbsp; Accessories Design</div>
+      <p>Designed commercially successful styles that became bestsellers across the accessories line, while developing novelty and fashion-forward shapes to create seasonal excitement and drive newness for the customer.</p>
     </div>
     <div class="gallery-masonry">
       <img src="https://alextoy82.github.io/mk-1.webp" alt="" loading="lazy" class="reveal" />
@@ -680,7 +776,7 @@ document.addEventListener('DOMContentLoaded',function(){
     </div>
     <div class="brand-intro">
       <div class="brand-intro-role">Senior Designer &nbsp;&middot;&nbsp; Multi-brand Studio</div>
-      <p>Designed across the Joy Gryson studio's portfolio of in-house labels including Gryson, IIIBeca, and Olivia Harris, spanning contemporary to bridge price points. Also led external design consulting for MCM from within the studio, developing the NY Collection for the Italian luxury market.</p>
+      <p>Designed across the Joy Gryson studio's portfolio of in-house labels including Gryson, IIIBeca, and Olivia Harris, spanning contemporary to bridge price points.</p>
     </div>
 
     <!-- GRYSON subsection -->
@@ -793,22 +889,6 @@ document.addEventListener('DOMContentLoaded',function(){
     </footer>
   </div>
 
-  <!-- ══════════════════════════════ TECHNICAL ══════════════════════════ -->
-  <div id="page-technical" class="page">
-    <div class="section-header">
-      <span class="section-label">Technical Work</span>
-    </div>
-    <div class="gallery-masonry">
-      <img src="https://alextoy82.github.io/tech-1.webp" alt="" loading="lazy" class="reveal" />
-      <img src="https://alextoy82.github.io/tech-2.webp" alt="" loading="lazy" class="reveal" />
-      <img src="https://alextoy82.github.io/tech-3.webp" alt="" loading="lazy" class="reveal" />
-      <img src="https://alextoy82.github.io/tech-4.webp" alt="" loading="lazy" class="reveal" />
-    </div>
-    <footer>
-      <a href="#" data-page="home">← Back to Work</a>
-
-    </footer>
-  </div>
 
   <!-- ══════════════════════════════ ABOUT ══════════════════════════════ -->
   <div id="page-about" class="page">
@@ -817,10 +897,10 @@ document.addEventListener('DOMContentLoaded',function(){
     </div>
     <div class="about-layout">
       <div class="about-text reveal">
-        <h2>Senior accessories design leader.</h2>
-        <p>Over 10 years at Michael Kors as Senior Director of Design Studio, leading the team responsible for logo innovation, novelty development, and surface design across Mainline, Outlet, and Off-price collections. Managed a core team while coordinating alignment across a cross-functional group spanning Accessories, Footwear, and Men's and Women's Ready-to-Wear, reporting directly to the VP of Handbags and Footwear.</p>
-        <p>Earlier career spanned Joy Gryson studio, where work included design consulting for MCM developing premium leather goods manufactured in Italy, as well as in-house brand development across Gryson, IIIBeca, and Olivia Harris. Additional design experience at Botkier New York.</p>
-        <p>Hands-on factory and material development across Italy, China, and Korea, from initial sourcing through prototype sign-off. Founder of A.Toy, an independent accessories label built on a distinct and original creative perspective.</p>
+        <h2>Creative and strategic design leader.</h2>
+        <p>Expertise in transforming brand identity through innovative logo development, material selection, and trend forecasting.</p>
+        <p>Adept at leading high-performing teams and optimizing design processes within global luxury and contemporary fashion brands.</p>
+        <p>Known for driving revenue growth through commercially successful designs, cross-functional collaboration, and a forward-thinking approach to branding and novelty innovation.</p>
         <div class="about-contact">
 
           <a href="tel:9172086078">917-208-6078</a>
@@ -834,12 +914,118 @@ document.addEventListener('DOMContentLoaded',function(){
         <img src="https://alextoy82.github.io/about-photo.webp" alt="Work" />
       </div>
     </div>
+
+    <div class="about-values reveal">
+      <span class="about-values-label">Leadership Approach</span>
+      <div class="about-values-grid">
+        <div class="about-value">
+          <div class="about-value-number">01</div>
+          <div class="about-value-title">Brand-Led Product Strategy</div>
+          <p class="about-value-body">Design decisions grounded in brand identity, consumer insight, and commercial goals. Creative vision balanced with margin, cost, and market realities to deliver products that perform.</p>
+        </div>
+        <div class="about-value">
+          <div class="about-value-number">02</div>
+          <div class="about-value-title">Systems &amp; Process Clarity</div>
+          <p class="about-value-body">Systems built for product creation and innovation. From development calendars to design standards and team workflows, helping teams move faster while maintaining quality and consistency.</p>
+        </div>
+        <div class="about-value">
+          <div class="about-value-number">03</div>
+          <div class="about-value-title">Collaborative Leadership</div>
+          <p class="about-value-body">Great product comes from aligned teams. Clear communication, mentorship, and cross-functional partnership build the trust and momentum that bring the best work forward.</p>
+        </div>
+      </div>
+    </div>
+
     <footer>
       <a href="#" data-page="home">← Back to Work</a>
       <span>© 2025 Alex Toy</span>
     </footer>
   </div>
 
+
+
+  <!-- ══════════════════════════════ PROCESS ════════════════════════════ -->
+  <div id="page-process" class="page">
+    <div class="section-header">
+      <span class="section-label">Process &nbsp;&middot;&nbsp; Michael Kors</span>
+    </div>
+
+    <div class="brand-intro">
+      <p>A look at the full design arc, from seasonal direction through material development, original sketches, surface design, and final product. Every collection begins with a point of view and ends with something a customer wants to carry.</p>
+    </div>
+
+    <hr class="process-divider" />
+
+    <!-- 01 Trend Direction -->
+    <div class="process-step">
+      <div class="process-step-number">01</div>
+      <div class="process-step-title">Trend Direction</div>
+      <p>Each season opens with a directional edit, pulling from runway, culture, art, and street. The trend board sets the emotional and commercial tone before a single sketch is drawn, aligning the team on color palette, material mood, and the story we want to tell.</p>
+    </div>
+    <div class="process-gallery-grid" style="max-width:none;">
+      <img src="process-mk-trend-resort.webp" alt="MK Resort 2025 Trend Direction" loading="lazy" />
+      <img src="process-mk-trend-fall.webp" alt="MK Fall 2025 Trend Direction" loading="lazy" />
+    </div>
+
+    <hr class="process-divider" />
+
+    <!-- 02 Material Development -->
+    <div class="process-step">
+      <div class="process-step-number">02</div>
+      <div class="process-step-title">Material Development</div>
+      <p>Material selection is where trend becomes tangible. Working directly with suppliers in Italy, China, and Korea, each season's palette of leathers, textiles, and exotics is curated to support the collection's direction, price architecture, and commercial requirements across channels.</p>
+    </div>
+    <div class="process-gallery-single">
+      <img src="process-mk-materials.webp" alt="MK Material Development" loading="lazy" />
+    </div>
+
+    <hr class="process-divider" />
+
+    <!-- 03 Design -->
+    <div class="process-step">
+      <div class="process-step-number">03</div>
+      <div class="process-step-title">Design</div>
+      <p>With direction and materials established, design development moves from concept to construction. Ideation explores proportion, silhouette, and functional details before narrowing to the styles that best serve the collection. Technical sketches then define hardware placement, strap configuration, and base construction, giving the factory everything needed to build the first prototype.</p>
+    </div>
+    <div class="process-gallery-grid" style="max-width:none;">
+      <img src="process-sketches.webp" alt="Concept Sketches" loading="lazy" />
+      <img src="process-mk-sketch.webp" alt="MK Bristol Satchel Technical Sketch" loading="lazy" />
+    </div>
+
+    <hr class="process-divider" />
+
+    <!-- 04 Surface Design -->
+    <div class="process-step">
+      <div class="process-step-number">04</div>
+      <div class="process-step-title">Surface Design</div>
+      <p>Logo innovation and surface treatment development give each collection its signature novelty story. Working across deboss, jacquard, print, and distortion techniques, these franchises create the customer excitement that drives sell-through, and travel across categories from bags to footwear and ready-to-wear.</p>
+    </div>
+    <div class="process-gallery-grid" style="max-width:none;">
+      <img src="process-mk-tiger.webp" alt="Tiger Distortion" loading="lazy" />
+      <img src="process-mk-empire.webp" alt="Empire Signature" loading="lazy" />
+      <img src="process-mk-facet.webp" alt="MK Facet Deboss" loading="lazy" />
+      <img src="process-mk-degrade.webp" alt="Degrade Signature" loading="lazy" />
+    </div>
+
+    <hr class="process-divider" />
+
+    <!-- 05 Final Product -->
+    <div class="process-step">
+      <div class="process-step-number">05</div>
+      <div class="process-step-title">Final Product</div>
+      <p>From concept to campaign. The final product reflects every decision made upstream, from the seasonal color story to the material call to the surface treatment, brought together in styles designed to perform commercially and create desire.</p>
+    </div>
+    <div class="process-gallery-grid" style="max-width:none; padding-bottom: 80px;">
+      <img src="https://alextoy82.github.io/mk-1.webp" alt="Michael Kors Final Product" loading="lazy" />
+      <img src="https://alextoy82.github.io/mk-2.webp" alt="Michael Kors Final Product" loading="lazy" />
+      <img src="https://alextoy82.github.io/mk-3.webp" alt="Michael Kors Final Product" loading="lazy" />
+      <img src="https://alextoy82.github.io/mk-4.webp" alt="Michael Kors Final Product" loading="lazy" />
+    </div>
+
+    <footer>
+      <a href="#" data-page="home">← Back to Work</a>
+    </footer>
+  </div>
 
 </body>
 </html>
