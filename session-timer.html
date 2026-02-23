@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Session Timer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@1,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #111111;
+      --surface: #1A1A1A;
+      --border: #2A2A2A;
+      --text: #F5F4F0;
+      --muted: #666666;
+      --lime: #C8F135;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+    }
+
+    .screen { display: none; flex-direction: column; min-height: 100vh; }
+    .screen.active { display: flex; }
+
+    /* ── SETUP ── */
+    .setup {
+      padding: 60px 32px 48px;
+      max-width: 540px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .setup-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 44px;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .setup-sub {
+      font-size: 13px;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      margin-bottom: 48px;
+    }
+
+    .preset-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .preset-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 32px;
+    }
+
+    .preset-btn {
+      padding: 18px 22px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: border-color 0.2s;
+    }
+
+    .preset-btn:hover, .preset-btn.selected {
+      border-color: var(--lime);
+    }
+
+    .preset-btn .dur {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .custom-area { display: none; margin-bottom: 28px; }
+    .custom-area.visible { display: block; }
+
+    .custom-area textarea {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      line-height: 1.75;
+      padding: 16px 20px;
+      resize: vertical;
+      min-height: 180px;
+      outline: none;
+    }
+
+    .custom-area textarea:focus { border-color: var(--lime); }
+
+    .format-hint {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 10px;
+      line-height: 1.65;
+    }
+
+    .start-btn {
+      width: 100%;
+      padding: 20px;
+      background: var(--lime);
+      color: #111;
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .start-btn:hover { opacity: 0.85; }
+
+    /* ── TIMER ── */
+    .color-band {
+      height: 5px;
+      width: 100%;
+      transition: background 0.6s ease;
+    }
+
+    .timeline {
+      display: flex;
+      height: 3px;
+      width: 100%;
+    }
+
+    .tl-seg {
+      height: 100%;
+      opacity: 0.25;
+      transition: opacity 0.4s;
+    }
+
+    .tl-seg.active { opacity: 1; }
+    .tl-seg.done { opacity: 0.55; }
+
+    .timer-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 32px 24px;
+      text-align: center;
+    }
+
+    .seg-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .seg-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(26px, 5.5vw, 46px);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--text);
+      margin-bottom: 28px;
+      line-height: 1.2;
+    }
+
+    .time-display {
+      font-size: clamp(80px, 22vw, 128px);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      margin-bottom: 28px;
+      font-variant-numeric: tabular-nums;
+      transition: color 0.4s;
+    }
+
+    @keyframes pulse-warn {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+
+    .time-display.warning {
+      animation: pulse-warn 1s ease-in-out infinite;
+    }
+
+    .progress-wrap {
+      width: 100%;
+      max-width: 380px;
+      height: 2px;
+      background: #222;
+      margin-bottom: 28px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      transition: width 1s linear, background 0.6s ease;
+    }
+
+    .next-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .next-name {
+      font-size: 14px;
+      color: #555;
+      margin-top: 5px;
+    }
+
+    /* Overview list */
+    .overview {
+      padding: 0 32px 8px;
+      max-width: 540px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .ov-item {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      padding: 11px 0;
+      border-bottom: 1px solid var(--border);
+      opacity: 0.3;
+      transition: opacity 0.35s;
+    }
+
+    .ov-item.active { opacity: 1; }
+    .ov-item.done { opacity: 0.5; }
+
+    .ov-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .ov-name { font-size: 13px; flex: 1; }
+    .ov-dur { font-size: 12px; color: var(--muted); }
+
+    /* Controls */
+    .controls {
+      padding: 24px 32px 40px;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .ctrl-btn {
+      padding: 14px 28px;
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .ctrl-btn:hover { opacity: 0.8; }
+    .btn-pause { background: var(--lime); color: #111; }
+    .btn-skip { background: #252525; color: var(--text); }
+    .btn-reset { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+
+    /* Done */
+    #doneScreen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 40px;
+      text-align: center;
+    }
+
+    #doneScreen.active { display: flex; }
+
+    .done-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 56px;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--lime);
+      margin-bottom: 14px;
+    }
+
+    .done-sub {
+      font-size: 14px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      margin-bottom: 52px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- SETUP -->
+<div id="setupScreen" class="screen active">
+  <div class="setup">
+    <h1 class="setup-title">Session Timer</h1>
+    <p class="setup-sub">Select a preset or paste your own session.</p>
+
+    <p class="preset-label">Presets</p>
+    <div class="preset-buttons">
+      <button class="preset-btn" onclick="selectPreset(this, 'recenter')">
+        <span>Recenter — Group Session</span>
+        <span class="dur">60 min · 6 segments</span>
+      </button>
+      <button class="preset-btn" onclick="selectPreset(this, 'oneone')">
+        <span>Personal Practice — 1:1</span>
+        <span class="dur">60 min · 5 segments</span>
+      </button>
+      <button class="preset-btn" onclick="selectPreset(this, 'custom')">
+        <span>Custom Session</span>
+        <span class="dur">Paste below</span>
+      </button>
+    </div>
+
+    <div class="custom-area" id="customArea">
+      <textarea id="customInput" placeholder="5 Arrival & Grounding&#10;10 Foundation of Meditation&#10;20 Guided Meditation&#10;5 Integration & Closing"></textarea>
+      <p class="format-hint">One segment per line. Start with the duration in minutes, then the name.<br>Example: <strong>10 Arrival &amp; Check-In</strong></p>
+    </div>
+
+    <button class="start-btn" onclick="startSession()">Start Session</button>
+  </div>
+</div>
+
+<!-- TIMER -->
+<div id="timerScreen" class="screen">
+  <div class="color-band" id="colorBand"></div>
+  <div class="timeline" id="timeline"></div>
+
+  <div class="timer-main">
+    <p class="seg-label" id="segLabel">Segment 1 of 6</p>
+    <h2 class="seg-name" id="segName"></h2>
+    <div class="time-display" id="timeDisplay">00:00</div>
+    <div class="progress-wrap">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <p class="next-label">Up Next</p>
+    <p class="next-name" id="nextName"></p>
+  </div>
+
+  <div class="overview" id="overview"></div>
+
+  <div class="controls">
+    <button class="ctrl-btn btn-pause" id="pauseBtn" onclick="togglePause()">Pause</button>
+    <button class="ctrl-btn btn-skip" onclick="skipSegment()">Skip</button>
+    <button class="ctrl-btn btn-reset" onclick="resetSession()">Reset</button>
+  </div>
+</div>
+
+<!-- DONE -->
+<div id="doneScreen">
+  <p class="done-title">Session complete.</p>
+  <p class="done-sub">Well done.</p>
+  <button class="start-btn" style="max-width:280px;" onclick="resetSession()">Start Again</button>
+</div>
+
+<script>
+  const COLORS = [
+    '#5BC4C4', '#6B9FD4', '#C8A45B', '#9B8EC4',
+    '#C8F135', '#E87D7D', '#7DC47D', '#D4886A'
+  ];
+
+  const PRESETS = {
+    recenter: [
+      { name: 'Arrival & Grounding',      dur: 5  },
+      { name: 'Foundation of Meditation', dur: 10 },
+      { name: 'Why Meditation Helps',     dur: 10 },
+      { name: 'How to Practice',          dur: 10 },
+      { name: 'Guided Meditation',        dur: 20 },
+      { name: 'Integration & Closing',    dur: 5  },
+    ],
+    oneone: [
+      { name: 'Arrival & Check-In',         dur: 10 },
+      { name: 'Foundation of Meditation',   dur: 10 },
+      { name: 'Personalized Instruction',   dur: 10 },
+      { name: 'Guided Meditation',          dur: 20 },
+      { name: 'Integration & Daily Plan',   dur: 10 },
+    ]
+  };
+
+  let segments    = [];
+  let current     = 0;
+  let remaining   = 0;
+  let paused      = true;
+  let interval    = null;
+  let activePreset = null;
+
+  function selectPreset(btn, key) {
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    activePreset = key;
+    document.getElementById('customArea').classList.toggle('visible', key === 'custom');
+  }
+
+  function parseCustom(text) {
+    return text.trim().split('\n')
+      .filter(l => l.trim())
+      .map(line => {
+        const m = line.match(/^(\d+)\s+(.+)$/);
+        if (!m) return null;
+        const dur = parseInt(m[1]);
+        return { dur, name: m[2].trim(), durSecs: dur * 60 };
+      })
+      .filter(Boolean);
+  }
+
+  function startSession() {
+    if (!activePreset) { alert('Please select a session first.'); return; }
+    if (activePreset === 'custom') {
+      segments = parseCustom(document.getElementById('customInput').value);
+      if (!segments.length) { alert('Please paste your session in the correct format.\nExample: 10 Arrival & Check-In'); return; }
+    } else {
+      segments = PRESETS[activePreset].map(s => ({ ...s }));
+    }
+    // Store actual seconds separately so redistribution doesn't affect original dur labels
+    segments.forEach(s => { s.durSecs = s.dur * 60; });
+    current = 0;
+    paused  = false;
+    buildTimeline();
+    buildOverview();
+    showSegment(0);
+    showScreen('timerScreen');
+    startTick();
+  }
+
+  function buildTimeline() {
+    const total = segments.reduce((s, seg) => s + seg.dur, 0);
+    const tl    = document.getElementById('timeline');
+    tl.innerHTML = '';
+    segments.forEach((seg, i) => {
+      const el = document.createElement('div');
+      el.className  = 'tl-seg';
+      el.id         = 'tl-' + i;
+      el.style.width      = (seg.dur / total * 100) + '%';
+      el.style.background = COLORS[i % COLORS.length];
+      tl.appendChild(el);
+    });
+  }
+
+  function buildOverview() {
+    const ov = document.getElementById('overview');
+    ov.innerHTML = '';
+    segments.forEach((seg, i) => {
+      const el = document.createElement('div');
+      el.className = 'ov-item';
+      el.id = 'ov-' + i;
+      el.innerHTML = `
+        <div class="ov-dot" style="background:${COLORS[i % COLORS.length]}"></div>
+        <span class="ov-name">${seg.name}</span>
+        <span class="ov-dur" id="ov-dur-${i}">${fmt(seg.durSecs)}</span>
+      `;
+      ov.appendChild(el);
+    });
+  }
+
+  function showSegment(idx) {
+    const seg   = segments[idx];
+    remaining   = seg.durSecs;
+    const color = COLORS[idx % COLORS.length];
+
+    document.getElementById('segLabel').textContent    = `Segment ${idx + 1} of ${segments.length}`;
+    document.getElementById('segName').textContent     = seg.name;
+    document.getElementById('colorBand').style.background = color;
+    document.getElementById('progressBar').style.background = color;
+    document.getElementById('progressBar').style.width = '0%';
+
+    const next = segments[idx + 1];
+    document.getElementById('nextName').textContent = next ? next.name : 'Session complete';
+
+    document.querySelectorAll('.tl-seg').forEach((el, i) => {
+      el.classList.toggle('active', i === idx);
+      el.classList.toggle('done',   i < idx);
+    });
+    document.querySelectorAll('.ov-item').forEach((el, i) => {
+      el.classList.toggle('active', i === idx);
+      el.classList.toggle('done',   i < idx);
+    });
+
+    document.getElementById('timeDisplay').classList.remove('warning');
+    document.getElementById('timeDisplay').style.color = '';
+    updateDisplay();
+  }
+
+  function updateDisplay() {
+    const seg      = segments[current];
+    const totalSec = seg.durSecs;
+    const elapsed  = totalSec - remaining;
+    const pct      = (elapsed / totalSec) * 100;
+
+    document.getElementById('progressBar').style.width = pct + '%';
+    document.getElementById('timeDisplay').textContent = fmt(remaining);
+
+    const warn = remaining <= 60 && remaining > 0;
+    const td   = document.getElementById('timeDisplay');
+    td.classList.toggle('warning', warn);
+    td.style.color = warn ? COLORS[current % COLORS.length] : '';
+  }
+
+  function fmt(secs) {
+    const m = Math.floor(secs / 60).toString().padStart(2, '0');
+    const s = (secs % 60).toString().padStart(2, '0');
+    return `${m}:${s}`;
+  }
+
+  function startTick() {
+    clearInterval(interval);
+    interval = setInterval(() => {
+      if (paused) return;
+      remaining--;
+      if (remaining <= 0) {
+        if (current < segments.length - 1) {
+          current++;
+          showSegment(current);
+        } else {
+          clearInterval(interval);
+          showScreen('doneScreen');
+        }
+      } else {
+        updateDisplay();
+      }
+    }, 1000);
+  }
+
+  function togglePause() {
+    paused = !paused;
+    document.getElementById('pauseBtn').textContent = paused ? 'Resume' : 'Pause';
+  }
+
+  function skipSegment() {
+    if (current < segments.length - 1) {
+      // Redistribute remaining seconds proportionally across future segments
+      const leftover   = remaining;
+      const future     = segments.slice(current + 1);
+      const futureTotal = future.reduce((s, seg) => s + seg.durSecs, 0);
+      future.forEach((seg, i) => {
+        const proportion = seg.durSecs / futureTotal;
+        segments[current + 1 + i].durSecs += Math.round(leftover * proportion);
+      });
+      current++;
+      buildOverview(); // refresh overview to show updated times
+      showSegment(current);
+    }
+  }
+
+  function resetSession() {
+    clearInterval(interval);
+    paused       = true;
+    activePreset = null;
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('selected'));
+    document.getElementById('customArea').classList.remove('visible');
+    document.getElementById('customInput').value = '';
+    document.getElementById('pauseBtn').textContent = 'Pause';
+    showScreen('setupScreen');
+  }
+
+  function showScreen(id) {
+    ['setupScreen', 'timerScreen', 'doneScreen'].forEach(s => {
+      const el = document.getElementById(s);
+      el.classList.remove('active');
+    });
+    document.getElementById(id).classList.add('active');
+  }
+</script>
+</body>
+</html>
