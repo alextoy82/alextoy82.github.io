@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Meal Prep">
+  <meta name="theme-color" content="#111111">
+  <title>Meal Prep</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: #111;
+      color: #f0ede8;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 0 40px;
+    }
+
+    header {
+      width: 100%;
+      padding: 56px 24px 24px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #888;
+    }
+
+    .week-label {
+      font-size: 12px;
+      color: #555;
+      margin-top: 6px;
+      letter-spacing: 0.05em;
+    }
+
+    .main {
+      width: 100%;
+      max-width: 420px;
+      padding: 0 20px;
+      flex: 1;
+    }
+
+    .cuisine-card {
+      background: #1c1c1c;
+      border-radius: 20px;
+      padding: 32px 24px 28px;
+      text-align: center;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+      transition: opacity 0.2s;
+    }
+
+    .cuisine-card.spinning {
+      opacity: 0.4;
+    }
+
+    .cuisine-emoji {
+      font-size: 52px;
+      line-height: 1;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .cuisine-name {
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: #f0ede8;
+    }
+
+    .cuisine-tagline {
+      font-size: 13px;
+      color: #666;
+      margin-top: 6px;
+    }
+
+    .spin-btn {
+      margin-top: 20px;
+      background: #f0ede8;
+      color: #111;
+      border: none;
+      border-radius: 100px;
+      padding: 12px 28px;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+
+    .spin-btn:active {
+      opacity: 0.8;
+      transform: scale(0.97);
+    }
+
+    .meals-section {
+      margin-top: 8px;
+    }
+
+    .meals-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 4px;
+      margin-bottom: 10px;
+    }
+
+    .meals-header span {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #555;
+    }
+
+    .reroll-btn {
+      background: none;
+      border: 1px solid #2e2e2e;
+      border-radius: 100px;
+      color: #777;
+      font-size: 12px;
+      padding: 5px 12px;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+
+    .reroll-btn:active {
+      color: #f0ede8;
+      border-color: #555;
+    }
+
+    .meal-card {
+      background: #1c1c1c;
+      border-radius: 14px;
+      padding: 18px 20px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      cursor: pointer;
+      transition: background 0.15s;
+      position: relative;
+    }
+
+    .meal-card.done {
+      opacity: 0.45;
+    }
+
+    .meal-card.done .meal-name {
+      text-decoration: line-through;
+      text-decoration-color: #555;
+    }
+
+    .meal-number {
+      font-size: 11px;
+      font-weight: 600;
+      color: #444;
+      letter-spacing: 0.05em;
+      padding-top: 3px;
+      min-width: 18px;
+    }
+
+    .meal-info {
+      flex: 1;
+    }
+
+    .meal-name {
+      font-size: 16px;
+      font-weight: 500;
+      color: #f0ede8;
+      line-height: 1.3;
+      margin-bottom: 4px;
+    }
+
+    .meal-prep {
+      font-size: 12px;
+      color: #555;
+      line-height: 1.5;
+    }
+
+    .check-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 1.5px solid #2e2e2e;
+      flex-shrink: 0;
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .meal-card.done .check-icon {
+      background: #333;
+      border-color: #333;
+    }
+
+    .check-icon svg {
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+
+    .meal-card.done .check-icon svg {
+      opacity: 1;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 24px;
+      color: #444;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .empty-state .big-text {
+      font-size: 40px;
+      margin-bottom: 16px;
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 11px;
+      color: #333;
+      margin-top: 32px;
+      padding: 0 24px;
+      line-height: 1.7;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-in {
+      animation: fadeIn 0.25s ease forwards;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Meal Prep</h1>
+  <div class="week-label" id="week-label"></div>
+</header>
+
+<div class="main">
+
+  <div class="cuisine-card" id="cuisine-card">
+    <span class="cuisine-emoji" id="cuisine-emoji">🎲</span>
+    <div class="cuisine-name" id="cuisine-name">What are we cooking?</div>
+    <div class="cuisine-tagline" id="cuisine-tagline">Tap decide to find out</div>
+    <button class="spin-btn" id="spin-btn" onclick="decideCuisine()">Decide My Week</button>
+  </div>
+
+  <div class="meals-section" id="meals-section" style="display:none">
+    <div class="meals-header">
+      <span>This week's meals</span>
+      <button class="reroll-btn" onclick="rerollMeals()">Different meals</button>
+    </div>
+    <div id="meals-list"></div>
+  </div>
+
+  <div class="footer-note" id="footer-note"></div>
+
+</div>
+
+<script>
+  const cuisines = [
+    {
+      name: "Japanese",
+      emoji: "🇯🇵",
+      tagline: "Clean, balanced, umami",
+      meals: [
+        { name: "Chicken Teriyaki Bowls", prep: "Marinate + grill chicken thighs, batch cook rice, roast broccoli" },
+        { name: "Salmon Onigiri", prep: "Bake salmon with soy + mirin, shape into rice balls, wrap with nori" },
+        { name: "Gyudon (Beef Rice Bowls)", prep: "Simmer thinly sliced beef in dashi, mirin, soy — serve over rice" },
+        { name: "Miso Soup + Rice + Tamagoyaki", prep: "Make dashi stock, roll layered egg omelet, prep toppings in jars" },
+        { name: "Soba Noodle Bowls", prep: "Cook soba, make cold tsuyu sauce, julienne cucumber + carrot" },
+        { name: "Karaage Chicken", prep: "Marinate in ginger + soy, double-fry in batches, store for reheating" },
+      ]
+    },
+    {
+      name: "Korean",
+      emoji: "🇰🇷",
+      tagline: "Bold, fermented, satisfying",
+      meals: [
+        { name: "Bibimbap Bowls", prep: "Sauté individual veg toppings, cook ground beef with gochujang, batch rice" },
+        { name: "Japchae (Glass Noodles)", prep: "Soak dangmyeon, stir-fry with beef + spinach + mushroom in sesame soy" },
+        { name: "Bulgogi Rice Bowls", prep: "Marinate beef in pear + soy overnight, grill or pan-sear in batches" },
+        { name: "Doenjang Jjigae (Soybean Stew)", prep: "Simmer tofu, zucchini, mushrooms in doenjang broth — stores well" },
+        { name: "Kimchi Fried Rice", prep: "Use aged kimchi + leftover rice, add egg on top per serving" },
+        { name: "Dakgalbi (Spicy Chicken)", prep: "Marinate chicken in gochujang + rice wine, stir-fry with cabbage + rice cake" },
+      ]
+    },
+    {
+      name: "Chinese",
+      emoji: "🇨🇳",
+      tagline: "Wok-fired, warming, versatile",
+      meals: [
+        { name: "Congee (Rice Porridge)", prep: "Slow-cook jasmine rice in chicken broth, prep toppings: ginger, scallion, egg" },
+        { name: "Mapo Tofu", prep: "Brown pork, build sauce with doubanjiang + Sichuan peppercorn, add silken tofu" },
+        { name: "Kung Pao Chicken", prep: "Dice and marinate chicken, stir-fry with peanuts + dried chilies in batches" },
+        { name: "Steamed Fish + Bok Choy", prep: "Steam fish fillets, blanch bok choy, finish with hot ginger-soy oil pour" },
+        { name: "Dan Dan Noodles", prep: "Make sesame-chili sauce, cook noodles, top with spiced pork + scallion" },
+        { name: "Egg Fried Rice", prep: "Use cold leftover rice, fry with egg, soy, sesame oil, frozen peas + carrot" },
+      ]
+    },
+    {
+      name: "Indian",
+      emoji: "🇮🇳",
+      tagline: "Spiced, hearty, deeply satisfying",
+      meals: [
+        { name: "Dal Tadka", prep: "Simmer red or yellow lentils, bloom spices in ghee for tempering" },
+        { name: "Chana Masala", prep: "Cook chickpeas in tomato-onion masala with cumin, coriander, amchur" },
+        { name: "Chicken Tikka Masala", prep: "Marinate + broil chicken, simmer in spiced tomato cream sauce" },
+        { name: "Palak Paneer", prep: "Blanch + blend spinach, pan-fry paneer cubes, simmer together with cream" },
+        { name: "Rajma (Kidney Bean Curry)", prep: "Pressure-cook kidney beans, build thick onion-tomato base with garam masala" },
+        { name: "Aloo Gobi", prep: "Roast cauliflower + potato with turmeric + cumin, finish with fresh ginger" },
+      ]
+    },
+    {
+      name: "Middle Eastern",
+      emoji: "🌙",
+      tagline: "Herbed, layered, aromatic",
+      meals: [
+        { name: "Chicken Shawarma Bowls", prep: "Marinate + roast spiced thighs, serve over rice with garlic sauce + pickles" },
+        { name: "Lentil Soup (Shorbat Adas)", prep: "Simmer red lentils with cumin + turmeric, finish with lemon + fried onion" },
+        { name: "Falafel + Hummus Plates", prep: "Make falafel from dried chickpeas, batch hummus, chop parsley salad" },
+        { name: "Shakshuka", prep: "Simmer tomato-pepper sauce with spices, poach eggs to order from batch sauce" },
+        { name: "Stuffed Peppers (Mahshi)", prep: "Fill peppers with spiced rice + beef, braise in tomato broth" },
+        { name: "Lamb Kofta Bowls", prep: "Form spiced lamb kofta, grill in batches, serve with yogurt sauce + tabbouleh" },
+      ]
+    },
+    {
+      name: "Latin",
+      emoji: "🌿",
+      tagline: "Slow-cooked, vibrant, comforting",
+      meals: [
+        { name: "Arroz con Pollo", prep: "Braise chicken thighs in sofrito + rice + beer until absorbed" },
+        { name: "Black Beans + White Rice", prep: "Slow-cook beans with sofrito, bay leaf, cumin — make big batch" },
+        { name: "Pernil (Slow-Roasted Pork)", prep: "Marinate shoulder in adobo overnight, roast low and slow, crisp skin" },
+        { name: "Picadillo", prep: "Brown ground beef with olives, capers, raisins, tomato — great over rice" },
+        { name: "Caldo de Pollo", prep: "Simmer whole chicken with veg + cilantro, shred meat back into broth" },
+        { name: "Ropa Vieja", prep: "Braise flank steak until shreddable, simmer in tomato-pepper sofrito" },
+      ]
+    },
+    {
+      name: "Mexican",
+      emoji: "🇲🇽",
+      tagline: "Bright, smoky, deeply flavored",
+      meals: [
+        { name: "Carnitas Bowls", prep: "Slow-cook pork shoulder in lard + orange + bay leaf, crisp under broiler" },
+        { name: "Chicken Tinga", prep: "Poach chicken, shred, simmer in chipotle-tomato sauce — great for tacos or bowls" },
+        { name: "Frijoles de Olla", prep: "Simmer dried pinto beans with epazote + onion + lard for hours" },
+        { name: "Enchiladas Verdes", prep: "Batch roast tomatillo sauce, fill + roll tortillas, bake with cheese" },
+        { name: "Pozole Rojo", prep: "Slow-cook pork shoulder + hominy in guajillo chile broth, prep garnish tray" },
+        { name: "Tacos al Pastor", prep: "Marinate pork in achiote + pineapple + chilies, cook on griddle in batches" },
+      ]
+    },
+    {
+      name: "Italian",
+      emoji: "🇮🇹",
+      tagline: "Rustic, slow, soul-filling",
+      meals: [
+        { name: "Bolognese", prep: "Slow-cook beef + pork in wine + milk + tomato for 3 hours, batch for the week" },
+        { name: "Ribollita (Tuscan Bean Soup)", prep: "Simmer cannellini beans, kale, stale bread in vegetable broth — improves daily" },
+        { name: "Chicken Cacciatore", prep: "Braise thighs in tomato, olives, capers, white wine until falling off the bone" },
+        { name: "Pasta e Fagioli", prep: "Build soffritto, add borlotti beans + pasta, serve thick" },
+        { name: "Polenta + Braised Short Ribs", prep: "Braise ribs in red wine + aromatics, make soft polenta to order from batch" },
+        { name: "Farrotto (Farro Risotto)", prep: "Toast farro, cook into broth gradually with mushrooms + parmesan" },
+      ]
+    },
+    {
+      name: "Thai",
+      emoji: "🇹🇭",
+      tagline: "Aromatic, fresh, layered heat",
+      meals: [
+        { name: "Green Curry with Chicken", prep: "Fry curry paste in coconut cream until split, add chicken + Thai eggplant, simmer" },
+        { name: "Massaman Curry", prep: "Slow-braise beef or lamb in peanut-coconut curry with potatoes + cardamom" },
+        { name: "Khao Man Gai (Poached Chicken Rice)", prep: "Poach whole chicken, cook rice in the broth, serve with ginger-garlic sauce" },
+        { name: "Tom Kha Gai", prep: "Simmer chicken in coconut milk with galangal, lemongrass, kaffir lime — do not boil" },
+        { name: "Pad See Ew", prep: "Stir-fry wide rice noodles with Chinese broccoli + egg + dark soy in smoking-hot wok" },
+        { name: "Larb Moo (Minced Pork Salad)", prep: "Cook ground pork, dress with toasted rice powder + fish sauce + lime + chili + mint" },
+      ]
+    },
+    {
+      name: "Vietnamese",
+      emoji: "🇻🇳",
+      tagline: "Bright, herbed, delicate",
+      meals: [
+        { name: "Pho Bo (Beef Noodle Soup)", prep: "Char onion + ginger, simmer bones 6+ hours, skim fat, season with fish sauce + rock sugar" },
+        { name: "Bun Bo Hue (Spicy Pork Noodle Soup)", prep: "Build lemongrass + shrimp paste broth with pork hock, serve with thick noodles" },
+        { name: "Com Tam (Broken Rice + Grilled Pork)", prep: "Marinate pork chops in lemongrass + fish sauce, grill, serve over broken rice with cha trung" },
+        { name: "Ga Kho Gung (Ginger Caramel Chicken)", prep: "Caramelize sugar, add fish sauce, braise chicken with ginger until sticky and dark" },
+        { name: "Bo Kho (Vietnamese Beef Stew)", prep: "Slow-braise beef with lemongrass, star anise, tomato — serve with baguette or noodles" },
+        { name: "Thit Kho (Caramel Pork + Egg)", prep: "Braise pork belly + boiled eggs in coconut water + fish sauce + caramel" },
+      ]
+    },
+    {
+      name: "Greek",
+      emoji: "🇬🇷",
+      tagline: "Simple, olive-oiled, timeless",
+      meals: [
+        { name: "Lemon Chicken + Orzo", prep: "Roast thighs with lemon + oregano, cook orzo in pan drippings" },
+        { name: "Spanakopita", prep: "Layer phyllo with spinach-feta filling, bake in large pan, slice for the week" },
+        { name: "Fasolada (White Bean Soup)", prep: "Simmer navy beans with celery, carrot, tomato, lots of olive oil — stores beautifully" },
+        { name: "Moussaka", prep: "Layer roasted eggplant + spiced lamb + béchamel, bake in large dish" },
+        { name: "Keftedes (Herb Meatballs)", prep: "Mix beef + pork with mint + oregano, pan-fry in batches, serve with tzatziki" },
+        { name: "Revithia (Baked Chickpea Stew)", prep: "Slow-roast chickpeas in clay pot or Dutch oven with onion, rosemary, lemon" },
+      ]
+    },
+    {
+      name: "Ethiopian",
+      emoji: "🇪🇹",
+      tagline: "Spiced, fermented, communal",
+      meals: [
+        { name: "Doro Wat (Spiced Chicken Stew)", prep: "Slow-cook chicken legs in berbere + niter kibbeh + caramelized onion for 2+ hours" },
+        { name: "Misir Wat (Red Lentil Stew)", prep: "Simmer red lentils in berbere-spiced onion base until thick and deep red" },
+        { name: "Tibs (Sautéed Beef)", prep: "Stir-fry cubed beef with rosemary + jalapeño + onion in spiced niter kibbeh" },
+        { name: "Gomen (Braised Collard Greens)", prep: "Cook collards low and slow with onion, garlic, niter kibbeh, jalapeño" },
+        { name: "Shiro Wat (Chickpea Flour Stew)", prep: "Whisk chickpea flour into spiced onion base, stir constantly until thick" },
+        { name: "Azifa (Green Lentil Salad)", prep: "Cook lentils until just tender, dress with mustard + jalapeño + lemon + onion, serve cold" },
+      ]
+    },
+    {
+      name: "Moroccan",
+      emoji: "🇲🇦",
+      tagline: "Braised, spiced, aromatic",
+      meals: [
+        { name: "Chicken Tagine with Preserved Lemon + Olives", prep: "Braise chicken in smen + cumin + ginger, finish with preserved lemon + olives" },
+        { name: "Lamb Tagine with Prunes + Almonds", prep: "Slow-braise with ras el hanout + honey + dried fruit, toast almonds separately" },
+        { name: "Harira Soup", prep: "Simmer tomato + lentil + chickpea + lamb + cinnamon, thicken with egg + lemon" },
+        { name: "Couscous with Braised Vegetables", prep: "Steam couscous twice with butter, serve over slow-cooked seven-vegetable broth" },
+        { name: "Zaalouk (Roasted Eggplant Salad)", prep: "Roast + mash eggplant with tomato, cumin, paprika, garlic, olive oil — serve warm or cold" },
+        { name: "Kefta Tagine (Meatball + Egg)", prep: "Spice ground lamb, form kefta, simmer in tomato sauce, crack eggs to finish" },
+      ]
+    },
+    {
+      name: "Turkish",
+      emoji: "🇹🇷",
+      tagline: "Grilled, herbed, slow-braised",
+      meals: [
+        { name: "Imam Bayildi (Stuffed Eggplant)", prep: "Slow-cook eggplant stuffed with onion + tomato + garlic in a pool of olive oil" },
+        { name: "Mercimek Corbasi (Red Lentil Soup)", prep: "Simmer lentils with cumin + paprika, finish with sizzled mint butter" },
+        { name: "Kuzu Tandir (Slow-Roasted Lamb)", prep: "Marinate lamb shoulder overnight, braise or roast low and slow until falling apart" },
+        { name: "Kuru Fasulye (White Bean Stew)", prep: "Simmer navy beans with tomato paste + lamb or beef — classic with rice pilaf" },
+        { name: "Pilav (Orzo Rice Pilaf)", prep: "Toast orzo in butter until brown, add rice + hot broth, steam covered until fluffy" },
+        { name: "Iskender-Style Beef", prep: "Thinly slice spiced beef, serve over torn bread with tomato sauce + brown butter + yogurt" },
+      ]
+    },
+    {
+      name: "Peruvian",
+      emoji: "🇵🇪",
+      tagline: "Citrus-bright, layered, bold",
+      meals: [
+        { name: "Lomo Saltado", prep: "Stir-fry beef tenderloin with tomato + soy + aji amarillo + fries — cook hot and fast" },
+        { name: "Aji de Gallina (Creamy Chicken)", prep: "Shred poached chicken, simmer in aji amarillo + bread + walnut + cheese sauce" },
+        { name: "Seco de Pollo", prep: "Braise chicken in blended cilantro + chicha de jora + aji panca until tender" },
+        { name: "Causa Rellena", prep: "Layer spiced mashed yellow potato with tuna or chicken + avocado, serve cold" },
+        { name: "Carapulcra", prep: "Soak dried potato overnight, braise with pork + peanut + aji panca sauce" },
+        { name: "Arroz con Leche", prep: "Slow-cook rice in whole milk with cinnamon + clove + lemon zest + sweetened condensed milk" },
+      ]
+    },
+    {
+      name: "Southern / BBQ",
+      emoji: "🍖",
+      tagline: "Smoked, slow, deeply comforting",
+      meals: [
+        { name: "Pulled Pork", prep: "Dry rub shoulder overnight, oven-roast at 275°F for 8 hours, shred and crisp under broiler" },
+        { name: "Smothered Pork Chops", prep: "Sear bone-in chops, braise in onion + garlic pan gravy until tender" },
+        { name: "Shrimp + Grits", prep: "Cook stone-ground grits low and slow with butter + cheese, batch cajun shrimp per serving" },
+        { name: "Collard Greens with Ham Hock", prep: "Low-and-slow braise with pot liquor, splash of cider vinegar at the end" },
+        { name: "Red Beans + Rice", prep: "Slow-cook with andouille + trinity + bay leaf all day — classic Monday dish" },
+        { name: "Braised Chicken Thighs in Tomato Gravy", prep: "Sear thighs, build tomato gravy with bell pepper + onion, braise until sauce thickens" },
+      ]
+    },
+    {
+      name: "Caribbean",
+      emoji: "🌴",
+      tagline: "Jerk-spiced, tropical, bold",
+      meals: [
+        { name: "Jerk Chicken", prep: "Marinate overnight in scotch bonnet + allspice + thyme + ginger, grill or roast at high heat" },
+        { name: "Oxtail Stew", prep: "Slow-braise oxtail with butter beans, browning sauce, allspice, thyme until gelatinous" },
+        { name: "Rice + Peas (Jamaican)", prep: "Cook long-grain rice in coconut milk with kidney beans + scotch bonnet + thyme + allspice" },
+        { name: "Curry Goat", prep: "Marinate goat in curry powder overnight, braise low and slow until fork-tender" },
+        { name: "Pelau (One-Pot Rice)", prep: "Caramelize chicken in burnt sugar, add pigeon peas + rice + coconut milk, steam together" },
+        { name: "Stewed Fish with Okra", prep: "Marinate fish in seasoning, make tomato-based stew with okra, cook fish in sauce" },
+      ]
+    },
+    {
+      name: "Filipino",
+      emoji: "🇵🇭",
+      tagline: "Vinegar-bright, savory, slow-cooked",
+      meals: [
+        { name: "Chicken Adobo", prep: "Braise chicken in vinegar + soy + bay leaf + garlic, reduce sauce until coating" },
+        { name: "Sinigang (Sour Tamarind Soup)", prep: "Simmer pork ribs in tamarind broth with daikon, eggplant, sitaw — sour + savory" },
+        { name: "Kare-Kare (Peanut Oxtail Stew)", prep: "Slow-braise oxtail in peanut sauce until gelatinous, serve with bagoong on the side" },
+        { name: "Arroz Caldo (Chicken Rice Porridge)", prep: "Simmer chicken in ginger-rice congee, top with calamansi + fried garlic + scallion" },
+        { name: "Bicol Express", prep: "Braise pork belly with coconut milk + shrimp paste + lots of bird's eye chilies" },
+        { name: "Mechado (Beef Pot Roast)", prep: "Braise beef chuck in tomato + soy + fish sauce + bay leaf, slice thick to serve" },
+      ]
+    },
+    {
+      name: "Spanish",
+      emoji: "🇪🇸",
+      tagline: "Smoky, paprika-rich, slow-cooked",
+      meals: [
+        { name: "Pollo al Ajillo (Garlic Chicken)", prep: "Braise chicken pieces in excessive garlic + sherry + white wine, reduce sauce" },
+        { name: "Cocido Madrileño (Chickpea Stew)", prep: "Simmer chickpeas with chorizo + morcilla + beef + vegetables in rich broth" },
+        { name: "Pisto (Spanish Ratatouille)", prep: "Slow-cook zucchini + pepper + tomato + onion in olive oil until jammy" },
+        { name: "Fabada Asturiana (Bean Stew)", prep: "Braise large white fabes beans with chorizo + morcilla + pork belly + bay leaf" },
+        { name: "Caldo Gallego (Galician Broth)", prep: "Simmer white beans with turnip greens + chorizo + ham bone + potato" },
+        { name: "Arroz al Horno (Baked Rice)", prep: "Build sofrito in cazuela, add broth + chickpeas + tomato + pork, bake rice in oven" },
+      ]
+    },
+    {
+      name: "French",
+      emoji: "🇫🇷",
+      tagline: "Braised, buttered, classical",
+      meals: [
+        { name: "Coq au Vin", prep: "Braise chicken in red wine with lardons, mushrooms, pearl onions, thyme" },
+        { name: "Boeuf Bourguignon", prep: "Sear beef chuck, braise in Burgundy with mushrooms + pearl onions for 3 hours" },
+        { name: "Cassoulet", prep: "Slow-braise white beans with duck confit + pork sausage + pork rind in a deep dish" },
+        { name: "Pot-au-Feu", prep: "Simmer beef + marrow bones + root vegetables in clear broth, serve separately" },
+        { name: "Soupe au Pistou", prep: "Make Provençal bean + vegetable soup, finish each bowl with basil-garlic-olive oil paste" },
+        { name: "Poulet Roti + Lentilles du Puy", prep: "Roast chicken over green lentils braised directly in the drippings" },
+      ]
+    },
+    {
+      name: "Taiwanese",
+      emoji: "🇹🇼",
+      tagline: "Soy-braised, comforting, street-style",
+      meals: [
+        { name: "Lu Rou Fan (Braised Pork Rice)", prep: "Slow-braise fatty pork belly in soy + rice wine + five spice + rock sugar, serve over rice" },
+        { name: "Beef Noodle Soup", prep: "Braise beef shin in soy + doubanjiang + star anise + tomato broth for 3+ hours" },
+        { name: "Sanbeiji (Three Cup Chicken)", prep: "Braise chicken in equal parts soy + sesame oil + rice wine, finish with Thai basil" },
+        { name: "Oyster Vermicelli (Oyster Misua)", prep: "Make thick sweet potato starch broth, add oysters + vermicelli + black vinegar" },
+        { name: "Minced Pork Sauce Rice (Ru Rou Fan)", prep: "Simmer ground pork in soy + five spice + shallot oil, spoon generously over rice" },
+        { name: "Scallion Pancakes (Cong You Bing)", prep: "Layer dough with sesame oil + scallion, pan-fry in batches, freeze extra" },
+      ]
+    },
+    {
+      name: "Malaysian / Indonesian",
+      emoji: "🌺",
+      tagline: "Rich, coconut-spiced, complex",
+      meals: [
+        { name: "Beef Rendang", prep: "Slow-cook beef in coconut milk + lemongrass + galangal until liquid evaporates and meat is dark" },
+        { name: "Nasi Goreng", prep: "Fry cold rice with kecap manis + shrimp paste + chicken + egg, finish with crispy shallots" },
+        { name: "Laksa", prep: "Build coconut-curry broth with shrimp paste + lemongrass, serve with noodles + fried tofu" },
+        { name: "Ayam Kecap (Soy Braised Chicken)", prep: "Braise chicken in sweet soy + garlic + ginger + star anise until sauce coats" },
+        { name: "Gado-Gado", prep: "Blanch assorted vegetables + tofu + eggs, batch peanut sauce, serve at room temp" },
+        { name: "Soto Ayam (Turmeric Chicken Soup)", prep: "Make clear turmeric-lemongrass broth, shred chicken, serve over rice + vermicelli" },
+      ]
+    },
+    {
+      name: "West African",
+      emoji: "🌍",
+      tagline: "Bold, earthy, deeply seasoned",
+      meals: [
+        { name: "Jollof Rice", prep: "Blend tomato + pepper + onion, fry in oil, cook long-grain rice directly in the stew" },
+        { name: "Groundnut Stew (Peanut Soup)", prep: "Braise chicken in tomato + peanut butter base with ginger + scotch bonnet" },
+        { name: "Egusi Soup", prep: "Toast ground melon seeds, simmer with leafy greens + crayfish + palm oil + stock" },
+        { name: "Suya-Spiced Beef Skewers", prep: "Coat beef in suya spice mix + ground peanut, grill hot in batches" },
+        { name: "Moi Moi (Steamed Bean Pudding)", prep: "Blend peeled black-eyed peas with peppers + fish + eggs, steam in foil cups" },
+        { name: "Ofada Stew (Ayamase)", prep: "Blend green peppers, fry in bleached palm oil with assorted meats + locust beans" },
+      ]
+    },
+    {
+      name: "Brazilian",
+      emoji: "🇧🇷",
+      tagline: "Slow-cooked, smoky, tropical",
+      meals: [
+        { name: "Feijoada", prep: "Slow-cook black beans with pork ribs + chouriço + smoked meats, serve with rice + farofa" },
+        { name: "Moqueca (Coconut Fish Stew)", prep: "Simmer fish in coconut milk + dendê oil + tomato + pepper + cilantro, serve over rice" },
+        { name: "Frango com Quiabo (Chicken + Okra)", prep: "Braise chicken thighs with garlic + tomato + okra, serve in the thick braising sauce" },
+        { name: "Arroz Carreteiro (Dried Beef Rice)", prep: "Sauté carne seca with onion + garlic, fold in rice + water, cook in one pot" },
+        { name: "Caldo Verde (Kale Soup)", prep: "Simmer potato + onion in chicken broth, blend base, add sliced kale + chouriço rounds" },
+        { name: "Virado à Paulista", prep: "Cook beans with pork + kale + farofa + tutu (bean paste), serve as a composed plate" },
+      ]
+    },
+    {
+      name: "Cajun / Creole",
+      emoji: "🦐",
+      tagline: "Dark roux, holy trinity, deeply seasoned",
+      meals: [
+        { name: "Gumbo", prep: "Cook dark roux until chocolate-brown, build with trinity + okra + andouille + shrimp" },
+        { name: "Jambalaya", prep: "Brown sausage + chicken, cook rice directly in seasoned tomato + stock in one pot" },
+        { name: "Crawfish Étouffée", prep: "Make roux-based sauce with trinity + butter, fold in crawfish tails, serve over rice" },
+        { name: "Red Beans + Rice (Monday Tradition)", prep: "Slow-cook kidney beans with pickled pork + tasso + andouille all day, serve over rice" },
+        { name: "Dirty Rice", prep: "Cook ground chicken livers + pork with trinity + heavy seasoning, fold into cooked rice" },
+        { name: "Smothered Chicken", prep: "Sear chicken, make dark onion gravy from drippings, braise until very tender" },
+      ]
+    },
+  ];
+
+  let currentCuisine = null;
+  let currentMeals = [];
+  let doneState = {};
+
+  function getWeekLabel() {
+    const now = new Date();
+    const day = now.getDay();
+    const diff = now.getDate() - day + (day === 0 ? -6 : 1);
+    const monday = new Date(now.setDate(diff));
+    const sunday = new Date(monday);
+    sunday.setDate(monday.getDate() + 6);
+    const opts = { month: 'short', day: 'numeric' };
+    return `Week of ${monday.toLocaleDateString('en-US', opts)} — ${sunday.toLocaleDateString('en-US', opts)}`;
+  }
+
+  function pickRandom(arr, n) {
+    const shuffled = [...arr].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, n);
+  }
+
+  function decideCuisine() {
+    const card = document.getElementById('cuisine-card');
+    card.classList.add('spinning');
+
+    setTimeout(() => {
+      const prev = currentCuisine;
+      let pick;
+      do {
+        pick = cuisines[Math.floor(Math.random() * cuisines.length)];
+      } while (pick === prev && cuisines.length > 1);
+
+      currentCuisine = pick;
+      doneState = {};
+      setMeals(pickRandom(pick.meals, 3));
+
+      document.getElementById('cuisine-emoji').textContent = pick.emoji;
+      document.getElementById('cuisine-name').textContent = pick.name;
+      document.getElementById('cuisine-tagline').textContent = pick.tagline;
+      document.getElementById('spin-btn').textContent = 'Pick Different';
+
+      card.classList.remove('spinning');
+      card.classList.add('animate-in');
+      setTimeout(() => card.classList.remove('animate-in'), 300);
+
+      renderMeals();
+
+      const section = document.getElementById('meals-section');
+      section.style.display = 'block';
+      section.classList.add('animate-in');
+      setTimeout(() => section.classList.remove('animate-in'), 300);
+
+      document.getElementById('footer-note').textContent = 'Tap a meal to mark it done.';
+    }, 200);
+  }
+
+  function setMeals(meals) {
+    currentMeals = meals;
+    doneState = {};
+  }
+
+  function rerollMeals() {
+    if (!currentCuisine) return;
+    setMeals(pickRandom(currentCuisine.meals, 3));
+    renderMeals();
+  }
+
+  function toggleDone(index) {
+    doneState[index] = !doneState[index];
+    renderMeals();
+  }
+
+  function renderMeals() {
+    const list = document.getElementById('meals-list');
+    list.innerHTML = '';
+    currentMeals.forEach((meal, i) => {
+      const done = !!doneState[i];
+      const card = document.createElement('div');
+      card.className = `meal-card${done ? ' done' : ''}`;
+      card.onclick = () => toggleDone(i);
+      card.innerHTML = `
+        <div class="meal-number">0${i + 1}</div>
+        <div class="meal-info">
+          <div class="meal-name">${meal.name}</div>
+          <div class="meal-prep">${meal.prep}</div>
+        </div>
+        <div class="check-icon">
+          <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+            <path d="M1 4L3.5 6.5L9 1" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      `;
+      list.appendChild(card);
+    });
+  }
+
+  document.getElementById('week-label').textContent = getWeekLabel();
+</script>
+
+</body>
+</html>
